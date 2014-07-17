@@ -24,8 +24,9 @@ namespace ttt.app
             var sb = new Spielbrett();
             es.OnAppended += sb.Update;
             var sp = new Spiel(es);
+            var schiri = new Schiedsrichter(es);
             var map = new Mapper(sb);
-            var app = new App(sp, map);
+            var app = new App(sp, schiri, map);
 
             app.Spielstand_aktualisiert += ui.Spielstand_anzeigen;
 

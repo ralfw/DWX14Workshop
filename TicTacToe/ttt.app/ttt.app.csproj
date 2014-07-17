@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="domain\App.cs" />
+    <Compile Include="domain\Schiedsrichter.cs" />
     <Compile Include="domain\Spielbrett.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="domain\Spiel.cs" />

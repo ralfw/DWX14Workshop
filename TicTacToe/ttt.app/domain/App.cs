@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ttt.app.adapters;
 using ttt.app.domain;
 
@@ -7,11 +8,13 @@ namespace ttt.app
     public class App
     {
         private readonly Spiel _spiel;
+        private readonly Schiedsrichter _schiri;
         private readonly Mapper _map;
 
-        public App(Spiel spiel, Mapper map)
+        public App(Spiel spiel, Schiedsrichter schiri, Mapper map)
         {
             _spiel = spiel;
+            _schiri = schiri;
             _map = map;
         }
 
@@ -32,17 +35,17 @@ namespace ttt.app
 
         public void Zug_ausführen(int spielfeldindex)
         {
-            _spiel.Spielende_schon_erreicht(
+            _schiri.Spielende_schon_erreicht(
                 () => _spiel.Zug_validieren(spielfeldindex,
                         () => {
                                 var spieler = _spiel.Spieler_feststellen();
                                 _spiel.Spielstein_setzen(spieler, spielfeldindex);
-                                _spiel.Prüfe_auf_Spielende(
-                                    () =>
-                                        {
-                                            spieler = _spiel.Spieler_feststellen();
-                                            Spielstand_generieren(spieler);
-                                        },
+                                  var spielzüge = _spiel.Spielzüge_des_aktuellen_Spiels_ermittteln().ToArray();
+                                _schiri.Prüfe_auf_Spielende(spielzüge,
+                                    () => {
+                                        spieler = _spiel.Spieler_feststellen();
+                                        Spielstand_generieren(spieler);
+                                    },
                                     Spielstand_generieren);
                             },
                         () => Spielstand_generieren(Spielstatusse.UngültigerZug)),
