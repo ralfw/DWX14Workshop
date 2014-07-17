@@ -45,7 +45,17 @@ namespace ttt.app.domain
         }
 
 
-        public void Spielende_erreicht(Action beiSpielGehtWeiter, Action<Spielstatusse> beiSpielende)
+        public void Spielende_schon_erreicht(Action beiSpielGehtWeiter, Action<Spielstatusse> beiSpielende)
+        {
+            var letzterEvent = _eventStore.History.Last();
+            if (letzterEvent.Name == Spielevents.EVENT_SPIEL_UNENTSCHIEDEN)
+                beiSpielende(Spielstatusse.Unentschieden);
+            else
+                beiSpielGehtWeiter();
+        }
+
+
+        public void Prüfe_auf_Spielende(Action beiSpielGehtWeiter, Action<Spielstatusse> beiSpielende)
         {
             Prüfe_auf_Unentschieden(
                 beiSpielGehtWeiter,

@@ -32,19 +32,21 @@ namespace ttt.app
 
         public void Zug_ausführen(int spielfeldindex)
         {
-            _spiel.Zug_validieren(spielfeldindex, 
-                () => {
-                    var spieler = _spiel.Spieler_feststellen();
-                    _spiel.Spielstein_setzen(spieler, spielfeldindex);
-                          _spiel.Spielende_erreicht(
-                              () => {
-                                  spieler = _spiel.Spieler_feststellen();
-                                  Spielstand_generieren(spieler);
-                              },
-                              Spielstand_generieren);
-                },
-                () => Spielstand_generieren(Spielstatusse.UngültigerZug));
-
+            _spiel.Spielende_schon_erreicht(
+                () => _spiel.Zug_validieren(spielfeldindex,
+                        () => {
+                                var spieler = _spiel.Spieler_feststellen();
+                                _spiel.Spielstein_setzen(spieler, spielfeldindex);
+                                _spiel.Prüfe_auf_Spielende(
+                                    () =>
+                                        {
+                                            spieler = _spiel.Spieler_feststellen();
+                                            Spielstand_generieren(spieler);
+                                        },
+                                    Spielstand_generieren);
+                            },
+                        () => Spielstand_generieren(Spielstatusse.UngültigerZug)),
+                Spielstand_generieren);
         }
 
 
