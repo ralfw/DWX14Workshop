@@ -19,6 +19,7 @@
         OamZug,
         Xgewonnen,
         Ogewonnen,
-        Unentschieden
+        Unentschieden,
+        UngültigerZug
     }
 }

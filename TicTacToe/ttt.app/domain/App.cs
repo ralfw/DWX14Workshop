@@ -26,21 +26,31 @@ namespace ttt.app
         {
             _spiel.Neues_Spiel_beginnen();
             var spieler = _spiel.Spieler_feststellen();
-            var spielstand = _map.Spieldstand_generieren(spieler);
-            Spielstand_aktualisiert(spielstand);
+            Spielstand_generieren(spieler);
         }
  
 
         public void Zug_ausführen(int spielfeldindex)
         {
-            var spieler = _spiel.Spieler_feststellen();
-            _spiel.Spielstein_setzen(spieler, spielfeldindex);
-            spieler = _spiel.Spieler_feststellen();
-            var spielstand = _map.Spieldstand_generieren(spieler);
+            _spiel.Zug_validieren(spielfeldindex, 
+                () => {
+                    var spieler = _spiel.Spieler_feststellen();
+                    _spiel.Spielstein_setzen(spieler, spielfeldindex);
+                    spieler = _spiel.Spieler_feststellen();
+                    Spielstand_generieren(spieler);
+                },
+                () => Spielstand_generieren(Spielstatusse.UngültigerZug));
+
+        }
+
+        private void Spielstand_generieren(Spielstatusse spieler)
+        {
+            var spielzüge = _spiel.Spielzüge_des_aktuellen_Spiels_ermittteln();
+            var spielstand = _map.Spieldstand_generieren(spielzüge, spieler);
             Spielstand_aktualisiert(spielstand);
         }
 
-        
+
         public event Action<Spielstand> Spielstand_aktualisiert;
     }
 }

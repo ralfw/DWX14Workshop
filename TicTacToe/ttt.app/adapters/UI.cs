@@ -6,7 +6,7 @@ namespace ttt.app.adapters
 {
     public partial class UI : Form
     {
-        private List<Button> _spielfelder;
+        private readonly List<Button> _spielfelder;
 
         public UI()
         {
@@ -46,7 +46,21 @@ namespace ttt.app.adapters
                 _spielfelder[i].Text = Spielstein_mappen(spielstand.Spielbrett[i]);
             }
 
-            label1.Text = spielstand.Spielstatus == Spielstatusse.XamZug ? "X am Zug" : "O am Zug";
+            switch (spielstand.Spielstatus)
+            {
+                case Spielstatusse.XamZug:
+                    label1.Text = "X am Zug!";
+                    break;
+                case Spielstatusse.OamZug:
+                    label1.Text = "O am Zug";
+                    break;
+                case Spielstatusse.UngültigerZug:
+                    label1.Text = "Ungültiger Zug!";
+                    break;
+                default:
+                    label1.Text = spielstand.Spielstatus.ToString();
+                    break;
+            }
         }
 
         private string Spielstein_mappen(Spielsteine spielstein)
