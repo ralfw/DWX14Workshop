@@ -34,6 +34,10 @@ namespace ttt.app.domain
             _eventStore.Append(Spielevents.EVENT_NEUES_SPIEL, Spielstatusse.XamZug.ToString());
         }
 
+        public void Laufendes_Spiel_zusichern() {
+            if (!_eventStore.History.Any()) Neues_Spiel_beginnen();
+        }
+
 
         public void Zug_validieren(int spielfeldindex, Action validerZug, Action invaliderZug)
         {

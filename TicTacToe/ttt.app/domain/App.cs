@@ -21,6 +21,7 @@ namespace ttt.app
 
         public void Starten()
         {
+            _spiel.Laufendes_Spiel_zusichern();
             Spiel_fortsetzen();
         }
 
