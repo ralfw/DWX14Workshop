@@ -45,9 +45,6 @@ namespace ttt.app.domain
         }
 
 
-
-
-
         public IEnumerable<Event> Spielzüge_des_aktuellen_Spiels_ermittteln()
         {
             var indexAktuellesSpiel = _eventStore.History

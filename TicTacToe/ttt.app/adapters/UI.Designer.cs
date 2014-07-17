@@ -176,7 +176,7 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "UI";
-            this.Text = "Form1";
+            this.Text = "Tic Tac Toe DWX14";
             this.ResumeLayout(false);
             this.PerformLayout();
 

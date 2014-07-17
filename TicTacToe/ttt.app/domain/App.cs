@@ -33,8 +33,12 @@ namespace ttt.app
 
         private void Spiel_fortsetzen()
         {
-            var spieler = _spiel.Spieler_feststellen();
-            Spielstand_generieren(spieler);
+            _schiri.Spielende_schon_erreicht(
+                () => {
+                    var spieler = _spiel.Spieler_feststellen();
+                    Spielstand_generieren(spieler);
+                },
+                Spielstand_generieren);
         }
  
 
