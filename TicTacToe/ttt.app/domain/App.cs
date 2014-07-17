@@ -43,6 +43,7 @@ namespace ttt.app
 
         }
 
+
         private void Spielstand_generieren(Spielstatusse spieler)
         {
             var spielzüge = _spiel.Spielzüge_des_aktuellen_Spiels_ermittteln();

@@ -16,9 +16,10 @@ namespace ttt.app.domain
         public Spielstatusse Spieler_feststellen()
         {
             var e = _eventStore.History.LastOrDefault();
-            if (e == null || e.Name != Spielevents.EVENT_SPIELSTEIN_GESETZT) return Spielstatusse.XamZug;
+            if (e.Name == Spielevents.EVENT_NEUES_SPIEL)
+                return e.Payload.IndexOf("XamZug") >= 0 ? Spielstatusse.XamZug : Spielstatusse.OamZug;
 
-            return e.Payload.IndexOf("X") >= 0 ? Spielstatusse.OamZug : Spielstatusse.XamZug;
+            return e.Payload.IndexOf("XamZug") >= 0 ? Spielstatusse.OamZug : Spielstatusse.XamZug;
         }   
 
 
@@ -30,7 +31,7 @@ namespace ttt.app.domain
 
         public void Neues_Spiel_beginnen()
         {
-            _eventStore.Append(Spielevents.EVENT_NEUES_SPIEL, "");
+            _eventStore.Append(Spielevents.EVENT_NEUES_SPIEL, Spielstatusse.XamZug.ToString());
         }
 
 

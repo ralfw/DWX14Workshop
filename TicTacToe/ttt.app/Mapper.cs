@@ -8,24 +8,14 @@ namespace ttt.app
 {
     public class Mapper
     {
-        private readonly EventStore _eventStore;
+        private readonly Spielbrett _spielbrett;
 
-        public Mapper(EventStore eventStore) { _eventStore = eventStore; }
+        public Mapper(Spielbrett spielbrett) { _spielbrett = spielbrett; }
 
 
         public Spielstand Spieldstand_generieren(IEnumerable<Event> spielevents, Spielstatusse aktuellerSpieler)
         {
-            var spielstand = new Spielstand();
-
-            spielstand.Spielbrett = new Spielsteine[9];
-            foreach (var e in spielevents) {
-                var parts = e.Payload.Split(',');
-                var spielfeldindex = int.Parse(parts[1]);
-                spielstand.Spielbrett[spielfeldindex] = parts[0] == "XamZug" ? Spielsteine.X : Spielsteine.O;
-            }
-
-            spielstand.Spielstatus = aktuellerSpieler;
-            return spielstand;
+            return new Spielstand {Spielbrett = _spielbrett.Spielfelder, Spielstatus = aktuellerSpieler};
         }
     }
 }

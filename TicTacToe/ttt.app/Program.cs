@@ -21,8 +21,10 @@ namespace ttt.app
 
             var es = new EventStore();
             var ui = new UI();
+            var sb = new Spielbrett();
+            es.OnAppended += sb.Update;
             var sp = new Spiel(es);
-            var map = new Mapper(es);
+            var map = new Mapper(sb);
             var app = new App(sp, map);
 
             app.Spielstand_aktualisiert += ui.Spielstand_anzeigen;

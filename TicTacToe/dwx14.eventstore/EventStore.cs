@@ -12,10 +12,15 @@ namespace dwx14.eventstore
 
         public void Append(string eventName, string payload)
         {
-            _events.Add(new Event{Name=eventName, Payload = payload});
+            var e = new Event {Name = eventName, Payload = payload};
+            _events.Add(e);
+            OnAppended(e);
         }
 
-        public IEnumerable<Event> History { get { return _events; }} 
+        public IEnumerable<Event> History { get { return _events; }}
+
+
+        public event Action<Event> OnAppended;
     }
 
     public class Event
