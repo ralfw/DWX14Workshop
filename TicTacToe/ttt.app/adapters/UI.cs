@@ -60,6 +60,12 @@ namespace ttt.app.adapters
                 case Spielstatusse.Unentschieden:
                     label1.Text = "Unentschieden! Das Spiel ist zuende.";
                     break;
+                case Spielstatusse.Xgewonnen:
+                    label1.Text = "Gewonnen: X!";
+                    break;
+                case Spielstatusse.Ogewonnen:
+                    label1.Text = "Gewonnen: O!";
+                    break;
                 default:
                     label1.Text = spielstand.Spielstatus.ToString();
                     break;

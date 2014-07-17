@@ -50,6 +50,8 @@ namespace ttt.app.domain
             var letzterEvent = _eventStore.History.Last();
             if (letzterEvent.Name == Spielevents.EVENT_SPIEL_UNENTSCHIEDEN)
                 beiSpielende(Spielstatusse.Unentschieden);
+            else if (letzterEvent.Name == Spielevents.EVENT_SPIEL_GEWONNEN)
+                beiSpielende((Spielstatusse) Enum.Parse(typeof (Spielstatusse), letzterEvent.Payload));
             else
                 beiSpielGehtWeiter();
         }
@@ -57,9 +59,11 @@ namespace ttt.app.domain
 
         public void Prüfe_auf_Spielende(Action beiSpielGehtWeiter, Action<Spielstatusse> beiSpielende)
         {
-            Prüfe_auf_Unentschieden(
-                beiSpielGehtWeiter,
-                () => beiSpielende(Spielstatusse.Unentschieden));
+            Prüfe_auf_Gewinn(
+                () => Prüfe_auf_Unentschieden(
+                        beiSpielGehtWeiter,
+                        () => beiSpielende(Spielstatusse.Unentschieden)),
+                beiSpielende);
         }
 
         private void Prüfe_auf_Unentschieden(Action beiSpielGehtWeiter, Action beiUnentschieden)
@@ -70,6 +74,38 @@ namespace ttt.app.domain
             }
             else
                 beiSpielGehtWeiter();
+        }
+
+        private void Prüfe_auf_Gewinn(Action beiSpielGehtWeiter, Action<Spielstatusse> beiGwinn)
+        {
+            var spielzüge = Spielzüge_des_aktuellen_Spiels_ermittteln();
+
+            var spielerzüge = spielzüge.Select(e => {
+                                            var parts = e.Payload.Split(',');
+                                            return new {
+                                                    Spieler = (Spielstatusse) Enum.Parse(typeof (Spielstatusse), parts[0]),
+                                                    Spielfeldindex = int.Parse(parts[1])
+                                                };
+                                        })
+                                       .Where(e => e.Spieler == Spielstatusse.XamZug)
+                                       .Select(e => e.Spielfeldindex)
+                                       .ToList();
+            spielerzüge.Sort();
+            
+            if (new[]{ new[]{0,1,2}, new[]{3,4,5}, new[]{6,7,8},
+                       new[]{0,3,6}, new[]{1,4,7}, new[]{2,5,8},
+                       new[]{0,4,8}, new[]{2,4,6}}.Any(g => ArrayEqual(g, spielerzüge.ToArray()))) {
+                _eventStore.Append(Spielevents.EVENT_SPIEL_GEWONNEN, Spielstatusse.Xgewonnen.ToString());
+                beiGwinn(Spielstatusse.Xgewonnen);
+            }
+            else
+                beiSpielGehtWeiter();
+        }
+
+        bool ArrayEqual(int[] a, int[] b)
+        {
+            if (a.Length != b.Length) return false;
+            return !a.Where((t, i) => t != b[i]).Any();
         }
 
 
