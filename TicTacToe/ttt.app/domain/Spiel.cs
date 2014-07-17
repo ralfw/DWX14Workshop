@@ -78,8 +78,18 @@ namespace ttt.app.domain
 
         private void Prüfe_auf_Gewinn(Action beiSpielGehtWeiter, Action<Spielstatusse> beiGwinn)
         {
-            var spielzüge = Spielzüge_des_aktuellen_Spiels_ermittteln();
+            var spielzüge = Spielzüge_des_aktuellen_Spiels_ermittteln().ToArray();
 
+            Prüfe_auf_Gewinn_für_Spieler(spielzüge, Spielstatusse.XamZug, Spielstatusse.Xgewonnen, 
+                () => Prüfe_auf_Gewinn_für_Spieler(spielzüge, Spielstatusse.OamZug, Spielstatusse.Ogewonnen, 
+                        beiSpielGehtWeiter, 
+                        beiGwinn), 
+                beiGwinn);
+        }
+
+        private void Prüfe_auf_Gewinn_für_Spieler(IEnumerable<Event> spielzüge, Spielstatusse spieler, Spielstatusse gewinn,
+                                                 Action beiSpielGehtWeiter, Action<Spielstatusse> beiGwinn)
+        {
             var spielerzüge = spielzüge.Select(e => {
                                             var parts = e.Payload.Split(',');
                                             return new {
@@ -87,16 +97,18 @@ namespace ttt.app.domain
                                                     Spielfeldindex = int.Parse(parts[1])
                                                 };
                                         })
-                                       .Where(e => e.Spieler == Spielstatusse.XamZug)
+                                       .Where(e => e.Spieler == spieler)
                                        .Select(e => e.Spielfeldindex)
                                        .ToList();
             spielerzüge.Sort();
-            
-            if (new[]{ new[]{0,1,2}, new[]{3,4,5}, new[]{6,7,8},
-                       new[]{0,3,6}, new[]{1,4,7}, new[]{2,5,8},
-                       new[]{0,4,8}, new[]{2,4,6}}.Any(g => ArrayEqual(g, spielerzüge.ToArray()))) {
-                _eventStore.Append(Spielevents.EVENT_SPIEL_GEWONNEN, Spielstatusse.Xgewonnen.ToString());
-                beiGwinn(Spielstatusse.Xgewonnen);
+
+            if (new[] {
+                    new[] {0, 1, 2}, new[] {3, 4, 5}, new[] {6, 7, 8},
+                    new[] {0, 3, 6}, new[] {1, 4, 7}, new[] {2, 5, 8},
+                    new[] {0, 4, 8}, new[] {2, 4, 6}
+                }.Any(g => ArrayEqual(g, spielerzüge.ToArray()))) {
+                _eventStore.Append(Spielevents.EVENT_SPIEL_GEWONNEN, gewinn.ToString());
+                beiGwinn(gewinn);
             }
             else
                 beiSpielGehtWeiter();
