@@ -1,4 +1,4 @@
-﻿namespace ttt.app
+﻿namespace ttt.app.adapters
 {
     partial class UI
     {

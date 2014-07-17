@@ -44,19 +44,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App.cs" />
+    <Compile Include="domain\App.cs" />
     <Compile Include="Mapper.cs" />
-    <Compile Include="Spiel.cs" />
-    <Compile Include="Spielstand.cs" />
-    <Compile Include="UI.cs">
+    <Compile Include="domain\Spiel.cs" />
+    <Compile Include="domain\Spielevents.cs" />
+    <Compile Include="adapters\Spielstand.cs" />
+    <Compile Include="adapters\UI.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI.Designer.cs">
+    <Compile Include="adapters\UI.Designer.cs">
       <DependentUpon>UI.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="UI.resx">
+    <EmbeddedResource Include="adapters\UI.resx">
       <DependentUpon>UI.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

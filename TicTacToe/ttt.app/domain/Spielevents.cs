@@ -1,4 +1,4 @@
-﻿namespace ttt.app
+﻿namespace ttt.app.domain
 {
     public static class Spielevents
     {

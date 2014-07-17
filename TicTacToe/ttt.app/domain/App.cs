@@ -1,4 +1,6 @@
 ﻿using System;
+using ttt.app.adapters;
+using ttt.app.domain;
 
 namespace ttt.app
 {

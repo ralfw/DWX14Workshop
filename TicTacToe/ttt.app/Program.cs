@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using dwx14.eventstore;
+using ttt.app.adapters;
+using ttt.app.domain;
 
 namespace ttt.app
 {

@@ -1,15 +1,9 @@
 ﻿using System.Linq;
 using dwx14.eventstore;
+using ttt.app.adapters;
 
-namespace ttt.app
+namespace ttt.app.domain
 {
-    public static class Spielevents
-    {
-        public const string EVENT_NEUES_SPIEL = "Neues Spiel begonnen";
-        public const string EVENT_SPIELSTEIN_GESETZT = "Spielstein gesetzt";
-    }
-
-
     public class Spiel
     {
         private readonly EventStore _eventStore;
