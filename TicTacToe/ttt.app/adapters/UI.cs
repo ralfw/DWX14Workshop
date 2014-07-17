@@ -57,6 +57,9 @@ namespace ttt.app.adapters
                 case Spielstatusse.UngültigerZug:
                     label1.Text = "Ungültiger Zug!";
                     break;
+                case Spielstatusse.Unentschieden:
+                    label1.Text = "Unentschieden! Das Spiel ist zuende.";
+                    break;
                 default:
                     label1.Text = spielstand.Spielstatus.ToString();
                     break;

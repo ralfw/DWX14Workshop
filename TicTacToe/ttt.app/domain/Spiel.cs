@@ -45,6 +45,22 @@ namespace ttt.app.domain
         }
 
 
+        public void Spielende_erreicht(Action beiSpielGehtWeiter, Action<Spielstatusse> beiSpielende)
+        {
+            Prüfe_auf_Unentschieden(
+                beiSpielGehtWeiter,
+                () => beiSpielende(Spielstatusse.Unentschieden));
+        }
+
+        private void Prüfe_auf_Unentschieden(Action beiSpielGehtWeiter, Action beiUnentschieden)
+        {
+            if (Spielzüge_des_aktuellen_Spiels_ermittteln().Count() == 9)
+                beiUnentschieden();
+            else
+                beiSpielGehtWeiter();
+        }
+
+
         public IEnumerable<Event> Spielzüge_des_aktuellen_Spiels_ermittteln()
         {
             var indexAktuellesSpiel = _eventStore.History

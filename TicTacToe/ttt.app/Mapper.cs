@@ -15,7 +15,8 @@ namespace ttt.app
 
         public Spielstand Spieldstand_generieren(IEnumerable<Event> spielevents, Spielstatusse aktuellerSpieler)
         {
-            return new Spielstand {Spielbrett = _spielbrett.Spielfelder, Spielstatus = aktuellerSpieler};
+            return new Spielstand {Spielbrett = _spielbrett.Spielfelder, 
+                                   Spielstatus = aktuellerSpieler};
         }
     }
 }

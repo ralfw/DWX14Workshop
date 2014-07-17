@@ -36,8 +36,12 @@ namespace ttt.app
                 () => {
                     var spieler = _spiel.Spieler_feststellen();
                     _spiel.Spielstein_setzen(spieler, spielfeldindex);
-                    spieler = _spiel.Spieler_feststellen();
-                    Spielstand_generieren(spieler);
+                          _spiel.Spielende_erreicht(
+                              () => {
+                                  spieler = _spiel.Spieler_feststellen();
+                                  Spielstand_generieren(spieler);
+                              },
+                              Spielstand_generieren);
                 },
                 () => Spielstand_generieren(Spielstatusse.UngültigerZug));
 
