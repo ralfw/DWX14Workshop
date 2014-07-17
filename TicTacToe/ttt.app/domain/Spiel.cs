@@ -54,8 +54,10 @@ namespace ttt.app.domain
 
         private void Prüfe_auf_Unentschieden(Action beiSpielGehtWeiter, Action beiUnentschieden)
         {
-            if (Spielzüge_des_aktuellen_Spiels_ermittteln().Count() == 9)
+            if (Spielzüge_des_aktuellen_Spiels_ermittteln().Count() >= 9) {
+                _eventStore.Append(Spielevents.EVENT_SPIEL_UNENTSCHIEDEN, "");
                 beiUnentschieden();
+            }
             else
                 beiSpielGehtWeiter();
         }
