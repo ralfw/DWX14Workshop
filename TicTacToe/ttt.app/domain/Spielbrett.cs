@@ -13,6 +13,11 @@ namespace ttt.app.domain
         private Spielsteine[] _spielfelder;
 
 
+        public Spielbrett(IEnumerable<Event> events) {
+            foreach(var e in events) Update(e);    
+        }
+
+
         public void Update(Event e)
         {
             switch (e.Name)

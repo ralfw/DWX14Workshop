@@ -59,15 +59,14 @@ namespace ttt.app.domain
         private void Prüfe_auf_Gewinn_für_Spieler(IEnumerable<Event> spielzüge, Spielstatusse spieler, Spielstatusse gewinn,
                                                  Action beiSpielGehtWeiter, Action<Spielstatusse> beiGwinn)
         {
-            var spielerzüge = spielzüge.Select(e =>
-            {
-                var parts = e.Payload.Split(',');
-                return new
-                {
-                    Spieler = (Spielstatusse)Enum.Parse(typeof(Spielstatusse), parts[0]),
-                    Spielfeldindex = int.Parse(parts[1])
-                };
-            })
+            var spielerzüge = spielzüge.Select(e => {
+                                            var parts = e.Payload.Split(',');
+                                            return new
+                                            {
+                                                Spieler = (Spielstatusse)Enum.Parse(typeof(Spielstatusse), parts[0]),
+                                                Spielfeldindex = int.Parse(parts[1])
+                                            };
+                                        })
                                        .Where(e => e.Spieler == spieler)
                                        .Select(e => e.Spielfeldindex)
                                        .ToList();

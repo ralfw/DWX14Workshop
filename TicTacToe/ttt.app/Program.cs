@@ -19,9 +19,9 @@ namespace ttt.app
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var es = new EventStore();
+            var es = new EventStore("eventstore.db");
             var ui = new UI();
-            var sb = new Spielbrett();
+            var sb = new Spielbrett(es.History);
             es.OnAppended += sb.Update;
             var sp = new Spiel(es);
             var schiri = new Schiedsrichter(es);

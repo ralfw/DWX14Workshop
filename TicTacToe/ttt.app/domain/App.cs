@@ -21,13 +21,18 @@ namespace ttt.app
 
         public void Starten()
         {
-            Neues_Spiel();
+            Spiel_fortsetzen();
         }
 
 
         public void Neues_Spiel()
         {
             _spiel.Neues_Spiel_beginnen();
+            Spiel_fortsetzen();
+        }
+
+        private void Spiel_fortsetzen()
+        {
             var spieler = _spiel.Spieler_feststellen();
             Spielstand_generieren(spieler);
         }
