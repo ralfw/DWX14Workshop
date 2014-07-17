@@ -4,32 +4,37 @@ namespace ttt.app
 {
     public class App
     {
+        private readonly Spiel _spiel;
+        private readonly Mapper _map;
+
+        public App(Spiel spiel, Mapper map)
+        {
+            _spiel = spiel;
+            _map = map;
+        }
+
+
         public void Starten()
         {
             Neues_Spiel();
         }
 
+
         public void Neues_Spiel()
         {
-            var spielstand = new Spielstand
-            {
-                Spielbrett = new Spielsteine[9],
-                Spielstatus = Spielstatusse.XamZug
-            };
+            _spiel.Neues_Spiel_beginnen();
+            var spieler = _spiel.Spieler_feststellen();
+            var spielstand = _map.Spieldstand_generieren(spieler);
             Spielstand_aktualisiert(spielstand);
         }
  
+
         public void Zug_ausführen(int spielfeldindex)
         {
-            var spielstand = new Spielstand
-            {
-                Spielbrett = new Spielsteine[9],
-                Spielstatus = Spielstatusse.XamZug
-            };
-
-            spielstand.Spielbrett[spielfeldindex] = Spielsteine.X;
-            spielstand.Spielstatus = spielfeldindex%2 == 0 ? Spielstatusse.XamZug : Spielstatusse.OamZug;
-
+            var spieler = _spiel.Spieler_feststellen();
+            _spiel.Spielstein_setzen(spieler, spielfeldindex);
+            spieler = _spiel.Spieler_feststellen();
+            var spielstand = _map.Spieldstand_generieren(spieler);
             Spielstand_aktualisiert(spielstand);
         }
 

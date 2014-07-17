@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using dwx14.eventstore;
 
 namespace ttt.app
 {
@@ -17,8 +17,11 @@ namespace ttt.app
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            var es = new EventStore();
             var ui = new UI();
-            var app = new App();
+            var sp = new Spiel(es);
+            var map = new Mapper(es);
+            var app = new App(sp, map);
 
             app.Spielstand_aktualisiert += ui.Spielstand_anzeigen;
 
